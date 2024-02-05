@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ![HenryLogo](https://d31uz8lwfmyn8g.cloudfront.net/Assets/logo-henry-white-lg.png)
 
 
@@ -349,3 +350,7 @@ Las métricas a representar son:
   - Ventas por productos.
   - Evolución del total de ventas por fecha de orden.
   - Top 10 de ventas por productos.
+=======
+# PI_MLOps
+Proyecto Individual - ML OPS - Higor Mendoza
+>>>>>>> 4686b15b038a80729ec281827351ffb09edf8f47
