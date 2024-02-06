@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from typing import Union
 from funciones import developer
 from funciones import userdata
-#from funciones import UserForGenre  
+from funciones import UserForGenre  
 from funciones import best_developer_year  
 from funciones import  developer_reviews_analysis
 #from funciones import recomendacion_usuario
@@ -32,7 +32,7 @@ async def user(user_id: str):
     except Exception as e:
         return {"error": str(e)}
 
-'''
+
 @app.get("/genre/{genero}")
 async def genre(genero: str):
     try:
@@ -40,7 +40,7 @@ async def genre(genero: str):
         return resultado
     except Exception as e:
         return {"error": str(e)}    
-'''
+
 
 @app.get("/best_developer_year/{año}")
 async def Best_developer_year(year: str):
