@@ -13,8 +13,8 @@ reviews=pd.read_parquet("reviews.parquet")
 new_df = pd.read_parquet('modelo.parquet')
 
 #modelo.pkl para la función 6
-with open ('modelo.pkl', 'rb') as archivo:
-    modelo = pickle.load(archivo)
+#with open ('modelo.pkl', 'rb') as archivo:
+#    modelo = pickle.load(archivo)
 
 #funcion 1
 def developer(desarrollador):
@@ -154,40 +154,3 @@ def developer_reviews_analysis(desarrolladora:str):
     # Se devuelve un diccionario con los resultados obtenidos
     return dicc
  
-
-#funcion 6
-def recomendacion_usuario( id_usuario ):
-    lista=[]
-    if id_usuario not in new_df['user_id'].unique():
-        return {'error': 'El usuario especificado no existe.'}
-    
-    #Crear una lista de juegos valorados por el usuario
-    juegos_valorados = new_df[new_df['user_id'] == id_usuario]['app_name'].unique()
-
-    #Crear una lista de todos los juegos disponibles
-    todos_los_juegos = new_df['app_name'].unique()
-
-    #Crear una lista de juegos no valorados por el usuario específico
-    juegos_no_valorados = list(set(todos_los_juegos) - set(juegos_valorados))
-
-    #Generar predicciones para los juegos no valorados por el usuario
-    predicciones = [modelo.predict(id_usuario, juego) for juego in juegos_no_valorados]
-
-    #Ordenar las predicciones en base a la valoración y obtener los juegos recomendados
-    recomendaciones = sorted(predicciones, key=lambda x: x.est, reverse=True)[:5]  # Obtener las 5 mejores recomendaciones
-
-  # Almacenar los nombres de los juegos recomendados en una lista
-    juegos_recomendados = [recomendacion.iid for recomendacion in recomendaciones]
-    
-    # Crear un diccionario con los nombres de los juegos recomendados
-    recomendaciones_dict = {
-        'Juego 1': juegos_recomendados[0],
-        'Juego 2': juegos_recomendados[1],
-        'Juego 3': juegos_recomendados[2],
-        'Juego 4': juegos_recomendados[3],
-        'Juego 5': juegos_recomendados[4]
-    }
-    
-    # Devolver el diccionario con los nombres de los juegos recomendados
-    return recomendaciones_dict
-    
