@@ -13,7 +13,7 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Escribe /docs en la URL para acceder a la API"}
 
 @app.get("/developer/{desarrollador}")
 async def desarrollador(desarrollador: str):
@@ -51,12 +51,12 @@ async def Best_developer_year(year: str):
     except Exception as e:
         return {"error": str(e)}                                      
 
-@app.get("/developer_reviews_analysis/{desarrolladora}") 
-async def get_developer(desarrolladora: str):
-    try:
-        resultado= developer_reviews_analysis(desarrolladora)
-        return resultado
-    except Exception as e:
-        return {"error":str(e)}
+#@app.get("/developer_reviews_analysis/{desarrolladora}") 
+#async def get_developer(desarrolladora: str):
+#    try:
+#        resultado= developer_reviews_analysis(desarrolladora)
+#        return resultado
+#    except Exception as e:
+#        return {"error":str(e)}
 
 
