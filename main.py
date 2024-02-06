@@ -5,7 +5,7 @@ from funciones import userdata
 #from funciones import UserForGenre  
 from funciones import best_developer_year  
 from funciones import  developer_reviews_analysis
-from funciones import recomendacion_usuario
+#from funciones import recomendacion_usuario
 from fastapi.responses import JSONResponse
 from typing import List, Dict, Tuple, Sequence, Any, Union, Optional, Callable
 app = FastAPI()
