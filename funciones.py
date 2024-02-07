@@ -9,7 +9,7 @@ import surprise
 games=pd.read_parquet("games.parquet")
 #items=pd.read_parquet("items.parquet")
 reviews=pd.read_parquet("reviews.parquet")
-new_df = pd.read_parquet('modelo.parquet')
+#new_df = pd.read_parquet('modelo.parquet')
 
 '''
 #modelo.pkl para la función 6
