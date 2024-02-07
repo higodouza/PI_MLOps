@@ -7,7 +7,7 @@ import surprise
 
 # Cargar los DataFrames desde los archivos parquet
 games=pd.read_parquet("games.parquet")
-#items=pd.read_parquet("items.parquet")
+items=pd.read_parquet("items.parquet")
 reviews=pd.read_parquet("reviews.parquet")
 #new_df = pd.read_parquet('modelo.parquet')
 
@@ -23,19 +23,19 @@ def developer(desarrollador):
     if desarrollador not in games['developer'].unique():
         return {'error': 'El Desarrollador especificado no existe.'}
     #llamo a las columnas que necesito
-    df = games[["item_id", "price","developer","año_lanzamiento"]] 
+    df = games[["item_id", "price","developer","release_year"]] 
     
     #llamo al desarrollador
     developer = df[df["developer"] == desarrollador]
     
     #obtengo la cantidad por año 
-    cantidad_item = developer.groupby("año_lanzamiento")["item_id"].count() 
+    cantidad_item = developer.groupby("release_year")["item_id"].count() 
     
     #juegos gratuitos del desarrollador
     gratis = developer[developer["price"] == 0] 
     
     #cantidad juegos gratis por año 
-    total_gratis= gratis.groupby("año_lanzamiento")["price"].count() 
+    total_gratis= gratis.groupby("release_year")["price"].count() 
 
     #porcentaje gratis por año 
     cont_gratis_año = round((total_gratis/cantidad_item)*100,2) 
@@ -45,7 +45,7 @@ def developer(desarrollador):
 
     cont_gratis_año.name = "Contenido Free"
     #unimos las dos tablas para hacerla unica
-    tabla = pd.merge(cantidad_item, cont_gratis_año,on="año_lanzamiento").reset_index() 
+    tabla = pd.merge(cantidad_item, cont_gratis_año,on="release_year").reset_index() 
 
     #reemplazo los nan por 0
     tabla = tabla.fillna(0) 
@@ -60,7 +60,7 @@ def developer(desarrollador):
 #funcion 2 
 #Realizar la unión de los DataFrames
 merged_reviews_games = reviews.merge(games[['item_id', 'price']])
-merged_reviews_games.drop(columns=['helpful','año',"sentiment_analysis"], inplace=True)
+merged_reviews_games.drop(columns=['helpful','year',"sentiment_analysis"], inplace=True)
 
 def userdata(user_id):
     if user_id not in merged_reviews_games['user_id'].unique():
@@ -90,7 +90,7 @@ def userdata(user_id):
 #funcion 3
 merged_items_games=pd.merge(games,items,on="item_id")
 
-def UserForGenre(genero):
+def userForGenre(genero):
     if not genero in merged_items_games.columns:
         return f"El género {genero} no existe en la base de datos."
 
@@ -100,13 +100,13 @@ def UserForGenre(genero):
 
     filtro_usuario = df_genero[df_genero["user_id"] == usur_mas_horas]
 
-    horas_jugadas_año = filtro_usuario.groupby("año_lanzamiento")["playtime_forever"].sum()
+    horas_jugadas_año = filtro_usuario.groupby("release_year")["playtime_forever"].sum()
 
     registro = horas_jugadas_año.to_dict()
 
     Horas_por_año = {}
     for clave, valor in registro.items():
-        clave_formateada = f'Año: {int(clave)}'
+        clave_formateada = f'year: {int(clave)}'
         valor_formateado = int(valor)
         Horas_por_año[clave_formateada] = valor_formateado
 
@@ -120,11 +120,11 @@ def UserForGenre(genero):
 def best_developer_year(año: int):
     # Realizar la unión de los DataFrames
     merged_df = pd.merge(reviews, games, on='item_id')
-    if año not in merged_df['año'].unique():
+    if año not in merged_df['year'].unique():
         return {'error': 'El año especificado no existe.'}
 
     # Filtrar los juegos por año y por recomendación positiva
-    df_year = merged_df[(merged_df['año'] == año) & (merged_df['recommend'] == True) & (merged_df['sentiment_analysis'] == 2)]
+    df_year = merged_df[(merged_df['year'] == año) & (merged_df['recommend'] == True) & (merged_df['sentiment_analysis'] == 2)]
 
     # Contar el número de juegos recomendados por desarrollador y devolver los tres primeros desarrolladores
     top_desarrolladores = df_year['developer'].value_counts().head(3).index.tolist()
@@ -140,7 +140,7 @@ def developer_reviews_analysis(desarrolladora:str):
         return {'error': 'El Desarrollador especificado no existe.'}
     
     #filtrar las columnas a utilizar 
-    df = merged[['user_id', 'item_id','developer','año','sentiment_analysis']] 
+    df = merged[['user_id', 'item_id','developer','year','sentiment_analysis']] 
     #filtrar los datos por desarrolladora
     df_merged = df[df["developer"] == desarrolladora] 
 
